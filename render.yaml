@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: compare3d-backend
+    env: docker
+    plan: starter
+    autoDeploy: true
+    envVars:
+      - key: CORS_ORIGINS
+        value: https://www.pryland.com,https://pryland.com
