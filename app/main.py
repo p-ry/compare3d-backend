@@ -8,19 +8,28 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 import cadquery as cq
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 # ----------------------------- CORS ---------------------------------
 # Set allowed origins via env var CORS_ORIGINS="https://www.pryland.com,https://pryland.com"
 import os
 origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "*").split(",")]
-app = FastAPI(title="Compare3D Backend")
+
+app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"] if origins == ["*"] else origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=[
+        "https://www.pryland.com",
+        "https://pryland.com",
+        "http://localhost:5173",   # keep while testing locally; remove later
+    ],
+    allow_credentials=False,
+    allow_methods=["*"],           # important for OPTIONS preflight
+    allow_headers=["*"],           # include content-type, etc.
 )
+
 
 # --------------------------- Geometry helpers ------------------------
 
